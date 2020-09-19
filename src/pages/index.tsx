@@ -1,8 +1,13 @@
+import Head from "next/head";
 import { Box, Heading } from "@chakra-ui/core";
 
 export default function Home() {
   return (
     <Box>
+      <Head>
+        <title>Home</title>
+      </Head>
+
       <Heading paddingBottom="5" size="lg">
         사용된 라이브러리 및 프레임 워크
       </Heading>

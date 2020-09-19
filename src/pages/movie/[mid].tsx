@@ -1,3 +1,4 @@
+import Head from "next/head";
 import axios, { AxiosRequestConfig } from "axios";
 import MovieDetailView from "src/components/movie/MovieDetail";
 
@@ -19,14 +20,19 @@ const MovieDetail: React.FC<MovieDetailProps> = ({
   description_full,
 }) => {
   return (
-    <MovieDetailView
-      large_cover_image={large_cover_image}
-      title_long={title_long}
-      rating={rating}
-      like_count={like_count}
-      download_count={download_count}
-      description_full={description_full}
-    />
+    <>
+      <Head>
+        <title>MovieDetail - {title_long}</title>
+      </Head>
+      <MovieDetailView
+        large_cover_image={large_cover_image}
+        title_long={title_long}
+        rating={rating}
+        like_count={like_count}
+        download_count={download_count}
+        description_full={description_full}
+      />
+    </>
   );
 };
 

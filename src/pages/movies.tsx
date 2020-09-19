@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 import { MovieView } from "../components/movie/MovieView";
@@ -50,6 +51,10 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
 
   return (
     <MovieList>
+      <Head>
+        <title>Movies</title>
+      </Head>
+
       {movies.map((item: movie) => (
         <MovieView key={item.id} movie={item} />
       ))}
