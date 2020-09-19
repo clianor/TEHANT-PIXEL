@@ -54,7 +54,7 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
     );
     setSortBy(sortby);
     setOrderBy(orderby);
-    setPage(1);
+    setPage(2);
     setMovies(movies);
   };
 
@@ -68,7 +68,7 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
       minimumRating
     );
     setQuality(event.target.value);
-    setPage(1);
+    setPage(2);
     setMovies(movies);
   };
 
@@ -82,7 +82,7 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
       event.target.value
     );
     setMinimumRating(event.target.value);
-    setPage(1);
+    setPage(2);
     setMovies(movies);
   };
 
@@ -97,12 +97,12 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (scroll === 100) getMovies();
-    }, 200);
+    }, 500);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [scroll, movies]);
+  }, [scroll, movies, sortBy, orderBy, quality, minimumRating]);
 
   return (
     <MovieList>
