@@ -1,8 +1,9 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
-import { MovieView } from "../components/movie/MovieView";
+import { Box, Select, Text } from "@chakra-ui/core";
 import { movie } from "../types/movie";
+import { MovieView } from "../components/movie/MovieView";
 import { MovieList } from "../components/movie/MovieList";
 
 interface MoviesProps {
@@ -14,9 +15,11 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
   const [page, setPage] = useState(pageProps);
   const [movies, setMovies] = useState<movie[]>(moviesProps);
   const [scroll, setScroll] = useState(0);
+  const [sortBy, setSortBy] = useState("title");
+  const [orderBy, setOrderBy] = useState("asc");
 
   const getMovies = async () => {
-    const newMovies: movie[] = await getMoviesAPI(page);
+    const newMovies: movie[] = await getMoviesAPI(page, sortBy, orderBy);
     setPage(page + 1);
     setMovies([...movies, ...newMovies]);
   };
@@ -29,6 +32,15 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
         100
     );
     setScroll(scrollLocation);
+  };
+
+  const handleSortChange = async (event: any) => {
+    const [sortby, orderby] = event.target.value.split(" ");
+    setSortBy(sortby);
+    setOrderBy(orderby);
+    setPage(1);
+    const movies = await getMoviesAPI(1, sortby, orderby);
+    setMovies(movies);
   };
 
   useEffect(() => {
@@ -47,13 +59,26 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [scroll]);
+  }, [scroll, movies, sortBy, orderBy]);
 
   return (
     <MovieList>
       <Head>
         <title>Movies</title>
       </Head>
+      <Box>
+        <Text pb="2" pl="1">
+          Sorting
+        </Text>
+        <Select onChange={handleSortChange}>
+          <option value="title asc">title asc</option>
+          <option value="title desc">title desc</option>
+          <option value="year asc">year asc</option>
+          <option value="year desc">year desc</option>
+          <option value="rating asc">rating asc</option>
+          <option value="rating desc">rating desc</option>
+        </Select>
+      </Box>
 
       {movies.map((item: movie) => (
         <MovieView key={item.id} movie={item} />
@@ -64,8 +89,7 @@ const Movies: React.FC<MoviesProps> = ({ moviesProps, pageProps }) => {
 
 export async function getServerSideProps() {
   const page = 1;
-
-  const movies = await getMoviesAPI(page);
+  const movies = await getMoviesAPI(page, "title", "asc");
 
   return {
     props: {
@@ -75,10 +99,10 @@ export async function getServerSideProps() {
   };
 }
 
-const getMoviesAPI = async (page: number) => {
+const getMoviesAPI = async (page: number, sortBy: string, orderBy: string) => {
   const options: AxiosRequestConfig = {
     method: "GET",
-    url: `https://yts.mx/api/v2/list_movies.json?limit=4&page=${page}`,
+    url: `https://yts.mx/api/v2/list_movies.json?limit=4&page=${page}&sort_by=${sortBy}&order_by=${orderBy}`,
   };
 
   const movies = await axios(options).then((res) =>
