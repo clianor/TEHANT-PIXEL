@@ -26,13 +26,12 @@ export const MovieView: React.FC<MovieViewProps> = ({ movie }) => {
           </Flex>
           <Text>{movie.summary}</Text>
         </Box>
-        <Box>
+        <Box textAlign="right">
           <NextLink href={`/movie/${movie.id}`}>
             <Link
               _hover={{ color: "blue.500" }}
               color="blue.200"
-              display="block"
-              textAlign="right"
+              display="inline-block"
             >
               자세히 보기
             </Link>

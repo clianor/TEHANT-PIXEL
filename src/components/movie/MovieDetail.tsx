@@ -34,14 +34,12 @@ const MovieDetailView: React.FC<MovieDetailViewProps> = ({
           <Text>{description_full}</Text>
         </Box>
       </Flex>
-      <Box>
+      <Box textAlign="left">
         <NextLink href="/movies">
           <Link
             _hover={{ color: "blue.500" }}
             color="blue.200"
             fontWeight="700"
-            display="block"
-            textAlign="left"
           >
             리스트로 돌아가기
           </Link>
